@@ -1,4 +1,3 @@
-from cgitb import text
 import kivy
 from kivy.uix.label import Label
 from kivy.app import App
