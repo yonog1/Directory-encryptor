@@ -49,18 +49,19 @@ def main():
     # assign directory
     directory = input("Enter path pls: ")
     option = input("(E)ncryption or (D)ecryption?: ")
-    # iterate over files in
-    # that directory
+    # iterate over files that directory
     if option.lower() == "e":
-        secret_key = gen_key()
+        secret_key = input("Enter key to encrypt with: ")
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
-            # checking if it is a file or directory
+            if os.path.isfile(f): # checking if it is a file
+                encrypt(f, secret_key)
     elif option.lower() == "d":
-        key = input("enter key: ")
+        key = input("Enter key to decrypt with: ")
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
-            decrypt(f, key)
+            if os.path.isfile(f): # checking if it is a file
+                decrypt(f, key)
 
 
 if __name__ == "__main__":
