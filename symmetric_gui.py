@@ -1,3 +1,4 @@
+import fix_proj
 import kivy
 from kivy.uix.label import Label
 from kivy.app import App
@@ -6,30 +7,43 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 
+def func():
+    print('pressed')
+    return 1
+
+
 class MyGrid(GridLayout):
     def __init__(self, **kwargs):
         super(MyGrid, self).__init__(**kwargs)
-        self.cols = 1
+        self.cols = 2
 
-        self.inside = GridLayout()
-        self.inside.cols = 2
+        self.gen_key = Button(text="Generate Key: ",
+                              font_size=30, on_press=self.gen_key_press)
+        self.key_output = TextInput()
 
-        self.inside.add_widget(Label(text="First Name: "))
-        self.firstName = TextInput(multiline=False)
-        self.inside.add_widget(self.firstName)
+        self.add_widget(self.gen_key)
+        self.add_widget(self.key_output)
 
-        self.inside.add_widget(Label(text="Last Name: "))
-        self.lastName = TextInput(multiline=False)
-        self.inside.add_widget(self.lastName)
+        self.encrypt = Button(text="Encrypt Directory: ", font_size=30) #, on_press=self.enc_dir_input(self.encrypted_dir.text))
+        self.encrypted_dir = TextInput()
+        self.add_widget(self.encrypt)
+        self.add_widget(self.encrypted_dir)
 
-        self.inside.add_widget(Label(text="Email: "))
-        self.email = TextInput(multiline=False)
-        self.inside.add_widget(self.email)
+        self.decrypt = Button(text="Decrypt Directory: ", font_size=30)
+        self.decrypted_dir = TextInput()
+        self.add_widget(self.decrypt)
+        self.add_widget(self.decrypted_dir)
 
-        self.add_widget(self.inside)
+    def gen_key_press(self, event):
+        self.key_output.text = fix_proj.gen_key()
 
-        self.submit = Button(text = "Submit: ", font_size = 40)
-        self.add_widget(self.submit)
+    #TODO bind it to its respective button and pass params accordingly
+    def enc_dir_input(self, dir):
+        fix_proj.encrypt(dir)
+
+    #TODO bind it to its respective button and pass params accordingly
+    def dec_dir_input(dir):
+        fix_proj.decrypt(dir)
 
 
 class MyApp(App):
