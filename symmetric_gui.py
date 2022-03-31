@@ -21,12 +21,13 @@ class MyGrid(GridLayout):
         self.add_widget(self.key_output)
 
         self.encrypt = Button(text="Encrypt Directory: ",
-                              font_size=30, on_press=self.popup_key)
+                              font_size=30, on_press=self.encrypt_popup_key)
         self.encrypted_dir = TextInput()
         self.add_widget(self.encrypt)
         self.add_widget(self.encrypted_dir)
 
-        self.decrypt = Button(text="Decrypt Directory: ", font_size=30, on_press = self.popup_key)
+        self.decrypt = Button(text="Decrypt Directory: ",
+                              font_size=30, on_press=self.decrypt_popup_key)
         self.decrypted_dir = TextInput()
         self.add_widget(self.decrypt)
         self.add_widget(self.decrypted_dir)
@@ -34,37 +35,57 @@ class MyGrid(GridLayout):
     def gen_key_press(self, event):
         self.key_output.text = fix_proj.gen_key()
 
-    def popup_key(self, event):
-        layout = GridLayout(cols = 1, padding = 10)
-  
-        popupLabel = Label(text = "Click for pop-up")
-        closeButton = Button(text = "Close the pop-up")
-  
-        layout.add_widget(popupLabel)
-        layout.add_widget(closeButton)       
-  
+    def encrypt_popup_key(self, event):
+        layout = GridLayout(cols=1, padding=10)
+
+        key_input = TextInput(text="")
+        closeButton = Button(text="Apply")
+
+        layout.add_widget(key_input)
+        layout.add_widget(closeButton)
+
         # Instantiate the modal popup and display
-        popup = Popup(title ='Demo Popup',
-                      content = layout,
-                      size_hint =(None, None), size =(200, 200))  
-        popup.open()   
-  
+        popup = Popup(title='Enter key:',
+                      content=layout,
+                      size_hint=(None, None), size=(200, 200))
+        popup.open()
+
         # Attach close button press with popup.dismiss action
-        closeButton.bind(on_press = popup.dismiss)
+        closeButton.bind(
+            on_press=lambda *args: self.enc_dir_input(key_input.text))
+
+    def decrypt_popup_key(self, event):
+        layout = GridLayout(cols=1, padding=10)
+
+        key_input = TextInput(text="")
+        closeButton = Button(text="Apply")
+
+        layout.add_widget(key_input)
+        layout.add_widget(closeButton)
+
+        # Instantiate the modal popup and display
+        popup = Popup(title='Enter key:',
+                      content=layout,
+                      size_hint=(None, None), size=(200, 200))
+
+        # Attach close button press with popup.dismiss action
+        closeButton.bind(
+            on_press=lambda *args: self.dec_dir_input(key_input.text))
+        popup.dismiss()
 
     # TODO bind it to its respective button and pass params accordingly
-    def enc_dir_input(self, dir):
-        fix_proj.encrypt(dir)
+    def enc_dir_input(self, text):
+        fix_proj.main(self.encrypted_dir.text, 'e', text)
 
     # TODO bind it to its respective button and pass params accordingly
-    def dec_dir_input(dir):
-        fix_proj.decrypt(dir)
+    def dec_dir_input(self, text):
+        fix_proj.main(self.encrypted_dir.text, 'd', text)
 
 
-class MyApp(App):
+class Encryptor(App):
     def build(self):
         return MyGrid()
 
 
 if __name__ == "__main__":
-    MyApp().run()
+    Encryptor().run()

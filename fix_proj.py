@@ -44,24 +44,24 @@ def decrypt(filename, key):
         file.write(decrypted_data)
 
 
-def main():
+def main(directory, option, secret_key):
 
     # assign directory
-    directory = input("Enter path pls: ")
-    option = input("(E)ncryption or (D)ecryption?: ")
+    # directory = input("Enter path pls: ") | taken as parameter
+    # option = input("(E)ncryption or (D)ecryption?: ")  | taken as parameter
     # iterate over files that directory
     if option.lower() == "e":
-        secret_key = input("Enter key to encrypt with: ")
+        #secret_key = input("Enter key to encrypt with: ")
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
             if os.path.isfile(f): # checking if it is a file
                 encrypt(f, secret_key)
     elif option.lower() == "d":
-        key = input("Enter key to decrypt with: ")
+        #secret_key = input("Enter key to decrypt with: ")
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
             if os.path.isfile(f): # checking if it is a file
-                decrypt(f, key)
+                decrypt(f, secret_key)
 
 
 if __name__ == "__main__":
