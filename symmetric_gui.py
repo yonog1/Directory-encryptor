@@ -73,11 +73,9 @@ class MyGrid(GridLayout):
             on_press=lambda *args: self.dec_dir_input(key_input.text))
         popup.dismiss()
 
-    # TODO bind it to its respective button and pass params accordingly
     def enc_dir_input(self, text):
         fix_proj.main(self.encrypted_dir.text, 'e', text)
 
-    # TODO bind it to its respective button and pass params accordingly
     def dec_dir_input(self, text):
         fix_proj.main(self.encrypted_dir.text, 'd', text)
 
