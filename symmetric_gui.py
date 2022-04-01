@@ -67,11 +67,11 @@ class MyGrid(GridLayout):
         popup = Popup(title='Enter key:',
                       content=layout,
                       size_hint=(None, None), size=(200, 200))
+        popup.open()
 
         # Attach close button press with popup.dismiss action
         closeButton.bind(
             on_press=lambda *args: self.dec_dir_input(key_input.text))
-        popup.dismiss()
 
     def enc_dir_input(self, text):
         fix_proj.main(self.encrypted_dir.text, 'e', text)
