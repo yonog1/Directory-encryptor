@@ -95,6 +95,7 @@ class MyGrid(GridLayout):
 
 class Encryptor(App):
     def build(self):
+        self.icon = 'mazi.ico'
         return MyGrid()
 
 
