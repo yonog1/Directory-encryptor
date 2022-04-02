@@ -1,14 +1,9 @@
 import os
-import cryptography
 from cryptography.fernet import Fernet
 
 
 def gen_key():
-    key = Fernet.generate_key()
-    with open("new_key", "w") as f:
-        f.write("SAVE THIS KEY TO DECRYPT DATA\nDO NO SHARE THIS KEY WITH ANYONE\n==============================================\n")
-        f.write(key.decode("ASCII"))
-    return key
+    return Fernet.generate_key()
 
 
 def encrypt(filename, key):

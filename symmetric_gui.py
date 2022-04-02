@@ -1,5 +1,7 @@
 import fix_proj
-import kivy
+from cryptography.fernet import InvalidToken
+
+from kivy.uix.label import Label
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
@@ -67,17 +69,29 @@ class MyGrid(GridLayout):
                       content=layout,
                       size_hint=(None, None), size=(200, 200))
         popup.open()
-
         # Attach close button press with popup.dismiss action
         closeButton.bind(
             on_press=lambda *args: self.dec_dir_input(key_input.text))
 
     def enc_dir_input(self, text):
-        fix_proj.main(self.encrypted_dir.text, 'e', text)
+        try:
+            fix_proj.main(self.encrypted_dir.text, 'e', text)
+        except FileNotFoundError:
+            print("The directory is invalid")
+        except ValueError:
+            print("Enter a key")
+        except InvalidToken:
+            print("Incorrect key")
 
     def dec_dir_input(self, text):
-        fix_proj.main(self.encrypted_dir.text, 'd', text)
-
+        try:
+            fix_proj.main(self.encrypted_dir.text, 'd', text)
+        except FileNotFoundError:
+            print("The directory is invalid")
+        except ValueError:
+            print("Enter a key")
+        except InvalidToken:
+            print("Incorrect key")
 
 class Encryptor(App):
     def build(self):
