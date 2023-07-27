@@ -1,7 +1,10 @@
 # Directory-encryptor
 Encrypts all files under a specified directory using symmetric encryption.
+You may use this program at your own discretion and no responsibility will be taken for missing files/data.
+It is NOT RECOMMENDED to use this in your own personal machine where you keep sensitive data.
 The logic and functionality are in the fix_proj.py file, while the GUI-related stuff is in the symmetric_gui.py file.
-To run the program, save the files in the same directory and run symmetric_gui.py.
+To run the program, without having to set an environment and deal with dependencies download the exe file.
+If you downloaded the source code and got your environment working, save the files in the same directory and run symmetric_gui.py.
 ![image](https://user-images.githubusercontent.com/38842103/161384089-e6b89dd7-1574-4f21-95d7-342936e7172e.png)
 
 Click the 'Generate key' button to generate a key to encrypt/decrypt data with, then find a path in your computer/network
