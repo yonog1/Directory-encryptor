@@ -1,4 +1,4 @@
-import fix_proj
+import main_logic
 from cryptography.fernet import InvalidToken
 
 from kivy.uix.label import Label
@@ -14,27 +14,30 @@ class MyGrid(GridLayout):
         super(MyGrid, self).__init__(**kwargs)
         self.cols = 2
 
-        self.gen_key = Button(text="Generate Key: ",
-                              font_size=30, on_press=self.gen_key_press)
+        self.gen_key = Button(
+            text="Generate Key: ", font_size=30, on_press=self.gen_key_press
+        )
         self.key_output = TextInput()
 
         self.add_widget(self.gen_key)
         self.add_widget(self.key_output)
 
-        self.encrypt = Button(text="Encrypt Directory: ",
-                              font_size=30, on_press=self.encrypt_popup_key)
+        self.encrypt = Button(
+            text="Encrypt Directory: ", font_size=30, on_press=self.encrypt_popup_key
+        )
         self.encrypted_dir = TextInput()
         self.add_widget(self.encrypt)
         self.add_widget(self.encrypted_dir)
 
-        self.decrypt = Button(text="Decrypt Directory: ",
-                              font_size=30, on_press=self.decrypt_popup_key)
+        self.decrypt = Button(
+            text="Decrypt Directory: ", font_size=30, on_press=self.decrypt_popup_key
+        )
         self.decrypted_dir = TextInput()
         self.add_widget(self.decrypt)
         self.add_widget(self.decrypted_dir)
 
     def gen_key_press(self, event):
-        self.key_output.text = fix_proj.gen_key()
+        self.key_output.text = main_logic.gen_key()
 
     def encrypt_popup_key(self, event):
         layout = GridLayout(cols=1, padding=10)
@@ -46,14 +49,13 @@ class MyGrid(GridLayout):
         layout.add_widget(closeButton)
 
         # Instantiate the modal popup and display
-        popup = Popup(title='Enter key:',
-                      content=layout,
-                      size_hint=(None, None), size=(200, 200))
+        popup = Popup(
+            title="Enter key:", content=layout, size_hint=(None, None), size=(200, 200)
+        )
         popup.open()
 
         # Attach close button press with popup.dismiss action
-        closeButton.bind(
-            on_press=lambda *args: self.enc_dir_input(key_input.text))
+        closeButton.bind(on_press=lambda *args: self.enc_dir_input(key_input.text))
 
     def decrypt_popup_key(self, event):
         layout = GridLayout(cols=1, padding=10)
@@ -65,17 +67,16 @@ class MyGrid(GridLayout):
         layout.add_widget(closeButton)
 
         # Instantiate the modal popup and display
-        popup = Popup(title='Enter key:',
-                      content=layout,
-                      size_hint=(None, None), size=(200, 200))
+        popup = Popup(
+            title="Enter key:", content=layout, size_hint=(None, None), size=(200, 200)
+        )
         popup.open()
         # Attach close button press with popup.dismiss action
-        closeButton.bind(
-            on_press=lambda *args: self.dec_dir_input(key_input.text))
+        closeButton.bind(on_press=lambda *args: self.dec_dir_input(key_input.text))
 
     def enc_dir_input(self, text):
         try:
-            fix_proj.main(self.encrypted_dir.text, 'e', text)
+            main_logic.main(self.encrypted_dir.text, "e", text)
         except FileNotFoundError:
             print("The directory is invalid")
         except ValueError:
@@ -85,7 +86,7 @@ class MyGrid(GridLayout):
 
     def dec_dir_input(self, text):
         try:
-            fix_proj.main(self.encrypted_dir.text, 'd', text)
+            main_logic.main(self.encrypted_dir.text, "d", text)
         except FileNotFoundError:
             print("The directory is invalid")
         except ValueError:
@@ -93,9 +94,10 @@ class MyGrid(GridLayout):
         except InvalidToken:
             print("Incorrect key")
 
+
 class Encryptor(App):
     def build(self):
-        self.icon = 'mazi.ico'
+        self.icon = "mazi.ico"
         return MyGrid()
 
 

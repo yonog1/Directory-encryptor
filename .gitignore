@@ -1,2 +1,4 @@
-new_key
 __pycache__/fix_proj.cpython-310.pyc
+/env
+/__pycache__
+keys.txt
