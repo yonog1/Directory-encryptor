@@ -1,5 +1,5 @@
 import main_logic
-import os, platform
+import os, sys, platform
 
 
 def save_key_to_file(key):
@@ -25,6 +25,7 @@ def main():
     user_input = ""
     while user_input != "exit":
         clear()
+        # [print(i) for i in sys.argv]
         print("Welcome to Yonog's encryptor")
         print("Select a menu option:\n")
         print("1 - Generate key")
@@ -51,9 +52,21 @@ def main():
 
                 pass
             case "2":
-                pass
+                path = input("Enter path:\n")
+                key = input("Enter key to encrypt with:\n")
+                recurse = input(
+                    "Enter 'y' to encrypt all sub-directories. Press 'Enter' otherwise.\n  "
+                )
+                recurse = True if recurse.lower() == "y" else False
+                main_logic.main(path, "e", key, recurse)
             case "3":
-                pass
+                path = input("Enter path:\n")
+                key = input("Enter key to decrypt with:\n")
+                recurse = input(
+                    "Enter 'y' to decrypt all sub-directories. Press 'Enter' otherwise.\n  "
+                )
+                recurse = True if recurse.lower() == "y" else False
+                main_logic.main(path, "d", key, recurse)
 
 
 if __name__ == "__main__":

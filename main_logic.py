@@ -36,18 +36,22 @@ def decrypt(filename, key):
         file.write(decrypted_data)
 
 
-def main(directory, option, secret_key):
+def main(directory, option, secret_key, recurse=False):
     # Assign directory and iterate over files that directory
     if option.lower() == "e":
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
             if os.path.isfile(f):  # Checking if it is a file
                 encrypt(f, secret_key)
+            if os.path.isdir(f) and recurse:
+                main(f, "e", secret_key, True)
     elif option.lower() == "d":
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
             if os.path.isfile(f):
                 decrypt(f, secret_key)
+            if os.path.isdir(f) and recurse:
+                main(f, "d", secret_key, True)
 
 
 if __name__ == "__main__":
