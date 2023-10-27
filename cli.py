@@ -1,5 +1,39 @@
+import os
+import platform
 import main_logic
-import os, sys, platform
+
+
+def main_menu():
+    user_input = ""
+    while user_input != "exit":
+        clear_screen()
+        print("Welcome to Yonog's encryptor")
+        print("Select a menu option:\n")
+        print("1 - Generate key")
+        print("2 - Encrypt Dir")
+        print("3 - Decrypt Dir")
+        print("\nType 'exit' and press 'Enter' to quit the application.")
+
+        user_input = input("\nEnter Option...\n")
+
+        menu_options = {
+            "1": generate_key,
+            "2": encrypt_directory,
+            "3": decrypt_directory,
+        }
+
+        selected_option = menu_options.get(user_input)
+        if selected_option:
+            try:
+                selected_option()
+            except FileNotFoundError as e:
+                clear_screen()
+                print(f"Error: {e.strerror}: '{e.filename}'")
+                input("Press Enter to continue...")
+            except ValueError as e:
+                clear_screen()
+                print(f"Error: Key is invalid.\n{e}")
+                input("Press Enter to continue...")
 
 
 def save_key_to_file(key):
@@ -7,11 +41,11 @@ def save_key_to_file(key):
         file.write(key + b"\n")
 
 
-def clear():
-    print(platform.system())
-    if platform.system() == "Windows":
+def clear_screen():
+    system = platform.system()
+    if system == "Windows":
         os.system("cls")
-    elif platform.system() == "Linux" or platform.system == "Darwin":
+    elif system in ("Linux", "Darwin"):
         os.system("clear")
     else:
         raise NotImplementedError(
@@ -19,55 +53,41 @@ def clear():
         )
 
 
-def main():
-    # user_input = input()
-    # Main Menu
-    user_input = ""
-    while user_input != "exit":
-        clear()
-        # [print(i) for i in sys.argv]
-        print("Welcome to Yonog's encryptor")
-        print("Select a menu option:\n")
-        print("1 - Generate key")
-        print("2 - Encrypt Dir")
-        print("3 - Decrypt Dir")
-        print("\n\nType 'exit' and press 'Enter' to quit the application.")
+def generate_key():
+    clear_screen()
+    print("Your key:")
+    key = main_logic.gen_key()
+    print(key.decode())
+    save_key_to_file(key)
+    print(
+        "****\nNote - All key generation history is saved in a 'keys.txt' file in the running directory\n****"
+    )
+    input("Press Enter to continue...")
 
-        user_input = input("\nEnter Option...\n")
 
-        match user_input:
-            case "1":
-                clear()
-                print("Your key:")
-                key = main_logic.gen_key()
-                print(key.decode())
-                save_key_to_file(key)
-                print(
-                    "****\n"
-                    "Note - All key generation history is saved in a 'keys.txt' file in the running directory"
-                    "\n****"
-                )
-                print("Press Enter to continue...")
-                input()
+def encrypt_directory():
+    path = input("Enter path:\n")
+    key = input("Enter key to encrypt with:\n")
+    recurse = input(
+        "Enter 'y' to encrypt all sub-directories. Press 'Enter' otherwise.\n"
+    )
+    recurse = True if recurse.lower() == "y" else False
+    main_logic.main(path, "e", key, recurse)
+    print("Encryption completed.")
+    input("Press Enter to continue...")
 
-                pass
-            case "2":
-                path = input("Enter path:\n")
-                key = input("Enter key to encrypt with:\n")
-                recurse = input(
-                    "Enter 'y' to encrypt all sub-directories. Press 'Enter' otherwise.\n  "
-                )
-                recurse = True if recurse.lower() == "y" else False
-                main_logic.main(path, "e", key, recurse)
-            case "3":
-                path = input("Enter path:\n")
-                key = input("Enter key to decrypt with:\n")
-                recurse = input(
-                    "Enter 'y' to decrypt all sub-directories. Press 'Enter' otherwise.\n  "
-                )
-                recurse = True if recurse.lower() == "y" else False
-                main_logic.main(path, "d", key, recurse)
+
+def decrypt_directory():
+    path = input("Enter path:\n")
+    key = input("Enter key to decrypt with:\n")
+    recurse = input(
+        "Enter 'y' to decrypt all sub-directories. Press 'Enter' otherwise.\n"
+    )
+    recurse = True if recurse.lower() == "y" else False
+    main_logic.main(path, "d", key, recurse)
+    print("Decryption completed.")
+    input("Press Enter to continue...")
 
 
 if __name__ == "__main__":
-    main()
+    main_menu()
