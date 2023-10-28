@@ -60,7 +60,7 @@ def generate_key():
     print(key.decode())
     save_key_to_file(key)
     print(
-        "****\nNote - All key generation history is saved in a 'keys.txt' file in the running directory\n****"
+        f"{'*' * 90}\nNote - All key generation history is saved in a 'keys.txt' file in the running directory\n{'*' * 90}"
     )
     input("Press Enter to continue...")
 
